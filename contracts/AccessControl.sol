@@ -8,8 +8,10 @@ contract AccessControl {
     //role => account => bool
     mapping(bytes32 => mapping(address => bool)) public roles;
 
-    bytes32 private constant ADMIN = keccak256(abi.encodePacked("ADMIN"));
-    bytes32 private constant USER = keccak256(abi.encodePacked("USER"));
+    //0xdf8b4c520ffe197c5343c6f5aec59570151ef9a492f2c624fd45ddde6135ec42
+    bytes32 public constant ADMIN = keccak256(abi.encodePacked("ADMIN"));
+    //0x2db9fd3d099848027c2383d0a083396f6c41510d7acfd92adc99b6cffcf31e96
+    bytes32 public constant USER = keccak256(abi.encodePacked("USER"));
 
     modifier onlyRole(bytes32 _role) {
         require(roles[_role][msg.sender], "not authorized");
