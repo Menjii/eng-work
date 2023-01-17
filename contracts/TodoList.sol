@@ -23,7 +23,7 @@ contract TodoList {
     mapping(address => uint) public tasksCount;
 
     constructor() {
-        createTask("The first one");
+        createTask("Initial task");
     }
 
     function createTask(string memory _content) public {

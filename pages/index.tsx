@@ -5,10 +5,11 @@ import {
   Stack,
   TextField,
   Typography,
+  useTheme,
 } from '@mui/material';
 import Head from 'next/head';
 import { useEffect, useRef, useState } from 'react';
-import { load } from '../src/funcs';
+import { loadToDo } from '../src/todoFunctions';
 
 const Home = () => {
   const [input, setInput] = useState<string>('');
@@ -32,10 +33,12 @@ const Home = () => {
     setRefresh(true);
   };
 
+  const theme = useTheme();
+
   useEffect(() => {
     if (!refresh) return;
     setRefresh(false);
-    load()
+    loadToDo()
       .then((response: any) => {
         setIsError(false);
         setAddresAccount(response.addressAccount);
@@ -50,27 +53,24 @@ const Home = () => {
   });
 
   return (
-    <Stack direction='column' justifyContent='center'>
-      <Head>
-        <title>Blockchain</title>
-        <meta name='description' content='content' />
-      </Head>
-
+    <Stack direction='column' justifyContent='center' sx={{ width: '100%' }}>
       <Stack
         direction='column'
         alignItems='center'
         justifyContent='center'
+        sx={{ width: '100%' }}
         rowGap={3}>
         {isError ? (
           <Typography>{errorText}</Typography>
         ) : (
           <>
-            <Typography variant='h3'>Todo Blockchain application</Typography>
-            <Stack direction='row' columnGap={1}>
+            <Typography variant='h3'>Todo blockchain</Typography>
+            <Stack width='100%' direction='row' columnGap={1}>
               <TextField
                 value={input}
                 variant='outlined'
                 label='Add task'
+                fullWidth
                 onChange={handleInputChange}
               />
               <Button
@@ -88,7 +88,10 @@ const Home = () => {
                 !task[2] ? (
                   <Paper
                     variant='outlined'
-                    sx={{ p: 1, backgroundColor: '#F6FEDB' }}>
+                    sx={{
+                      p: 1,
+                      backgroundColor: theme.palette.secondary.light,
+                    }}>
                     <Stack
                       direction='row'
                       alignItems='center'
@@ -119,7 +122,10 @@ const Home = () => {
                 task[2] ? (
                   <Paper
                     variant='outlined'
-                    sx={{ p: 1, backgroundColor: '#DBFEE3' }}>
+                    sx={{
+                      p: 1,
+                      backgroundColor: theme.palette.secondary.dark,
+                    }}>
                     <Stack
                       direction='row'
                       alignItems='center'

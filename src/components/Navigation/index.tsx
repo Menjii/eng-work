@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   CSSObject,
-  Icon,
-  IconButton,
   List,
   ListItemButton,
   ListItemIcon,
@@ -12,7 +10,6 @@ import {
 } from '@mui/material';
 import MuiDrawer from '@mui/material/Drawer';
 import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
-import { getTheme } from '../../../theme/getTheme';
 import NavigationButton from './NavigationButton';
 
 import HomeIcon from '@mui/icons-material/Home';
@@ -20,6 +17,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import LogoDevIcon from '@mui/icons-material/LogoDev';
+import { getTheme } from '../../../theme/getTheme';
 
 const drawerWidth = 195;
 
@@ -93,37 +91,21 @@ const StyledListItemIcon = styled(ListItemIcon)(() => ({
 
 const Navigation = () => {
   const [open, setOpen] = useState(false);
-  const theme = useTheme();
   return (
-    <ThemeProvider theme={theme}>
-      <Drawer variant='permanent' open={open}>
+    <ThemeProvider theme={createTheme(getTheme('dark'))}>
+      <Drawer
+        variant='permanent'
+        PaperProps={{
+          sx: {
+            backgroundColor: '#372800',
+          },
+        }}
+        open={open}>
         <DrawerHeader
           sx={{
             padding: 0,
             overflowX: 'hidden',
-          }}>
-          <List>
-            <ListItemButton
-              disabled
-              sx={{
-                height: '100%',
-                justifyContent: open ? 'initial' : 'center',
-                '&.Mui-disabled': {
-                  opacity: 1,
-                },
-              }}>
-              <StyledListItemIcon>
-                <LogoDevIcon />
-              </StyledListItemIcon>
-              <ListItemIcon
-                sx={{
-                  opacity: open ? 1 : 0,
-                }}>
-                <LogoDevIcon />
-              </ListItemIcon>
-            </ListItemButton>
-          </List>
-        </DrawerHeader>
+          }}></DrawerHeader>
         <PositionSvgBox>
           <StyledCircleSvgWrapper onClick={() => setOpen(!open)}>
             {open ? <ArrowBackIcon /> : <ArrowForwardIcon />}
