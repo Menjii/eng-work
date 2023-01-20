@@ -1,7 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-contract TodoList {
+import "./AccessControl.sol";
+
+contract TodoList is AccessControl {
+
     struct Task {
         uint id;
         string content;
@@ -22,8 +25,12 @@ contract TodoList {
     mapping(address => mapping(uint => Task)) public tasks;
     mapping(address => uint) public tasksCount;
 
+    modifier requiredRole2(bytes32 _role) {
+        require(roles[_role][msg.sender], "AccessControl: Caller not allowed");
+        _;
+    }
+
     constructor() {
-        createTask("Initial task");
     }
 
     function createTask(string memory _content) public {
@@ -33,11 +40,19 @@ contract TodoList {
         tasksCount[msg.sender]++;
     }
 
-    function toggleCompleted(uint _id) public {
+    function toggleCompleted(uint _id) public{
         Task memory task = tasks[msg.sender][_id];
         task.completed = !task.completed;
         tasks[msg.sender][_id] = task;
         emit TaskCompleted(_id, task.completed);
-
     }
+
+    function getADMIN() public pure returns (bytes32) {
+        return ADMIN;
+    }
+
+    function getUSER() public pure returns (bytes32) {
+        return USER;
+    }
+
 }

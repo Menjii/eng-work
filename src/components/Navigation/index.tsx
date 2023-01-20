@@ -41,19 +41,11 @@ const closedMixin = (theme: Theme): CSSObject => ({
 
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== 'open',
-})(({ theme, open }) => ({
+})(({}) => ({
   width: drawerWidth,
   flexShrink: 0,
   whiteSpace: 'nowrap',
   boxSizing: 'border-box',
-  ...(open && {
-    ...openedMixin(theme),
-    '& .MuiDrawer-paper': openedMixin(theme),
-  }),
-  ...(!open && {
-    ...closedMixin(theme),
-    '& .MuiDrawer-paper': closedMixin(theme),
-  }),
 }));
 
 const DrawerHeader = styled('div')(({ theme }) => ({
@@ -64,33 +56,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   ...theme.mixins.toolbar,
 }));
 
-const PositionSvgBox = styled(Box)({
-  position: 'relative',
-  display: 'flex',
-  width: '100%',
-  height: '40px',
-});
-
-const StyledCircleSvgWrapper = styled(Box)(({ theme }) => ({
-  transform: 'translateX(50%)',
-  width: '20px',
-  height: '20px',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  position: 'absolute',
-  cursor: 'pointer',
-  right: 0,
-  backgroundColor: theme.palette.primary.main,
-  borderRadius: '50%',
-}));
-
-const StyledListItemIcon = styled(ListItemIcon)(() => ({
-  minWidth: 22,
-}));
-
 const Navigation = () => {
-  const [open, setOpen] = useState(false);
   return (
     <ThemeProvider theme={createTheme(getTheme('dark'))}>
       <Drawer
@@ -100,17 +66,12 @@ const Navigation = () => {
             backgroundColor: '#372800',
           },
         }}
-        open={open}>
+        open={true}>
         <DrawerHeader
           sx={{
             padding: 0,
             overflowX: 'hidden',
           }}></DrawerHeader>
-        <PositionSvgBox>
-          <StyledCircleSvgWrapper onClick={() => setOpen(!open)}>
-            {open ? <ArrowBackIcon /> : <ArrowForwardIcon />}
-          </StyledCircleSvgWrapper>
-        </PositionSvgBox>
         <List
           sx={{
             paddingTop: 0,
@@ -119,13 +80,13 @@ const Navigation = () => {
           <NavigationButton
             icon={<HomeIcon />}
             text='Home'
-            isCollapsed={!open}
+            isCollapsed={false}
             to='/'
           />
           <NavigationButton
             icon={<AdminPanelSettingsIcon />}
             text='Admin panel'
-            isCollapsed={!open}
+            isCollapsed={false}
             to='/panel'
           />
         </List>

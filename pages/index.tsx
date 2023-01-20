@@ -7,8 +7,7 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import Head from 'next/head';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { loadToDo } from '../src/todoFunctions';
 
 const Home = () => {
@@ -19,6 +18,7 @@ const Home = () => {
   const [tasks, setTasks] = useState<any[]>([]);
   const [isError, setIsError] = useState(false);
   const [errorText, setErrorText] = useState('');
+  const [isUser, setIsUser] = useState<boolean>();
 
   const handleInputChange = (e: any) => setInput(e.currentTarget.value);
 
@@ -44,6 +44,7 @@ const Home = () => {
         setAddresAccount(response.addressAccount);
         setTasks(response.tasks);
         setContract(response.todoContract);
+        setIsUser(response.isUser);
       })
       .catch((error) => {
         setIsError(true);
