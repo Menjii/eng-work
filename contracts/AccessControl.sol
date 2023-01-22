@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.16;
 
 contract AccessControl {
 
@@ -14,9 +14,6 @@ contract AccessControl {
 
     mapping(address => bytes32) public rolesUSER;
     address[] public rolesUserCount;
-
-    mapping(address => bytes32) public rolesViewer;
-    address[] public rolesViewerCOunt;
 
     //0xdf8b4c520ffe197c5343c6f5aec59570151ef9a492f2c624fd45ddde6135ec42
     bytes32 public constant ADMIN = keccak256(abi.encodePacked("ADMIN"));
@@ -45,11 +42,6 @@ contract AccessControl {
                 rolesUSER[_account] = _role;
                 rolesUserCount.push(_account);
              }
-        } else if (_role == 0xdfb118e7fb180cb21baebdc5d0b33ccc34c8e0be422c1a4f57131ff74b98ca6e) {
-            if(rolesViewer[_account] != _role) {
-                rolesViewer[_account] = _role;
-                rolesViewerCOunt.push(_account);
-            }
         }
 
         emit SetRole(_role, _account);
@@ -72,11 +64,6 @@ contract AccessControl {
                 delete rolesUSER[_account];
                 delete rolesUserCount[findElementInArray(_account, rolesUserCount)];
              }
-        } else if (_role == 0xdfb118e7fb180cb21baebdc5d0b33ccc34c8e0be422c1a4f57131ff74b98ca6e) {
-            if(rolesViewer[_account] == _role) {
-                delete rolesViewer[_account];
-                delete rolesViewerCOunt[findElementInArray(_account, rolesUserCount)];
-            }
         }
 
         emit DeleteRole(_role, _account);
@@ -88,10 +75,6 @@ contract AccessControl {
 
     function returnArrayOfUsers() public view returns (address[] memory) {
         return rolesUserCount;
-    }
-
-    function returnArrayOfViewers() public view returns (address[] memory) {
-        return rolesViewerCOunt;
     }
 
     function findElementInArray(address _account, address[] memory _arr) public pure returns(uint) {

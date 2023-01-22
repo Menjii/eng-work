@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.16;
 
 import "./AccessControl.sol";
 
@@ -25,34 +25,19 @@ contract TodoList is AccessControl {
     mapping(address => mapping(uint => Task)) public tasks;
     mapping(address => uint) public tasksCount;
 
-    modifier requiredRole2(bytes32 _role) {
-        require(roles[_role][msg.sender], "AccessControl: Caller not allowed");
-        _;
-    }
+    constructor() {}
 
-    constructor() {
-    }
-
-    function createTask(string memory _content) public {
+    function createTask(string memory _content) public requiredRole(USER) {
         uint taskCount = tasksCount[msg.sender];
         tasks[msg.sender][taskCount] = Task(taskCount, _content, false);
         emit TaskCreated(taskCount, _content, false);
         tasksCount[msg.sender]++;
     }
 
-    function toggleCompleted(uint _id) public{
+    function toggleCompleted(uint _id) public requiredRole(USER) {
         Task memory task = tasks[msg.sender][_id];
         task.completed = !task.completed;
         tasks[msg.sender][_id] = task;
         emit TaskCompleted(_id, task.completed);
     }
-
-    function getADMIN() public pure returns (bytes32) {
-        return ADMIN;
-    }
-
-    function getUSER() public pure returns (bytes32) {
-        return USER;
-    }
-
 }

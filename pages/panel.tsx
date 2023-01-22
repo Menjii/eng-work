@@ -36,15 +36,10 @@ const Panel = () => {
       label: 'User',
       id: '0x2db9fd3d099848027c2383d0a083396f6c41510d7acfd92adc99b6cffcf31e96',
     },
-    {
-      label: 'Viewer',
-      id: '0xdfb118e7fb180cb21baebdc5d0b33ccc34c8e0be422c1a4f57131ff74b98ca6e',
-    },
   ];
 
   const [adminTable, setAdminTable] = useState([]);
   const [userTable, setUserTable] = useState([]);
-  const [viewerTable, setViewerTable] = useState([]);
 
   const adminArray = adminTable.map((value) => ({
     address: value,
@@ -56,16 +51,7 @@ const Panel = () => {
     role: 'USER',
   }));
 
-  const viewerArray = viewerTable.map((value) => ({
-    address: value,
-    role: 'USER',
-  }));
-
-  console.log(adminArray);
-  console.log(adminTable);
-
-  const rows = adminArray.concat(userArray, viewerArray);
-  console.log(rows);
+  const rows = adminArray.concat(userArray);
 
   const updateRoles = async (contract: any) => {
     await contract.returnArrayOfAdmins().then((response: any) => {
@@ -73,9 +59,6 @@ const Panel = () => {
     });
     await contract.returnArrayOfUsers().then((response: any) => {
       setUserTable(response);
-    });
-    await contract.returnArrayOfViewers().then((response: any) => {
-      setViewerTable(response);
     });
   };
 
